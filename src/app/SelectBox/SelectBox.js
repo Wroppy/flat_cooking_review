@@ -1,3 +1,4 @@
+"use client";
 import {
   FormControl,
   InputLabel,
@@ -8,20 +9,28 @@ import {
 } from "@mui/material";
 import styles from "./SelectBox.module.scss";
 
-export default function SelectBox({ value, values, setValue, labelHeading, heading }) {
-  const labelId = `select-${labelHeading.replaceAll(" ", "-")}-label`;
-
+export default function SelectBox(props) {
+  const labelId = `select-${props.labelHeading.replaceAll(" ", "-")}-label`;
   return (
     <Box className={styles.FormSelect}>
-      <Typography>{heading}</Typography>
+      <Typography>{props.heading}</Typography>
       <Box minWidth={150}>
         <FormControl fullWidth>
           <InputLabel size="small" id={labelId}>
-            {labelHeading}
+            {props.labelHeading}
           </InputLabel>
-          <Select size="small"  labelId={labelId}>
-            {values.map((item, index) => (
-              <MenuItem>{item}</MenuItem>
+          <Select
+            value={props.value ?? ""}
+            size="small"
+            labelId={labelId}
+            onChange={(e) => {
+              props.setValue(e.target.value);
+            }}
+          >
+            {props.values.map((item, index) => (
+              <MenuItem value={item} key={index}>
+                {item}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>

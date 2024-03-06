@@ -16,10 +16,26 @@ import SelectBox from "./SelectBox/SelectBox";
 export default function ReviewForm() {
   const names = ["Perry", "Briony", "Liam", "Nick", "Weyman"].sort();
 
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState("Perry");
   const [chefName, setChefName] = useState("");
-  const [chefs, setChefss] = useState(names);
+  const [chefs, setChefs] = useState(names);
   const [rating, setRating] = useState(5);
+
+  // Removes the user's name from the cooks to stop self-voting
+  useEffect(() => {
+    // Stops empty select boxes
+    if (!userName) return;
+
+    // Removes the name from the list
+    let index = names.indexOf(userName);
+    names.splice(index, 1)
+    setChefs(names);
+
+    // Checks if the cook's value is the new user
+    if (userName === chefName) {
+      setChefName("");
+    }
+  }, [userName]);
 
   return (
     <Paper elevation={1} className={styles.ReviewForm}>
